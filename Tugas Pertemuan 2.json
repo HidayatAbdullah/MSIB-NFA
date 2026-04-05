@@ -1,0 +1,159 @@
+{
+  "name": "Tugas Pertemuan 2",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Kamu adalah kasir ramah di Cafe Delight. WAJIB: Selalu gunakan tool Google Sheets untuk melihat daftar menu dan harga sebelum menjawab pertanyaan user tentang menu. Jangan memberikan menu yang tidak ada di dalam file Google Sheets tersebut. Jika menu tidak ada, katakan dengan sopan bahwa menu belum tersedia."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9c60fc63-7f6b-42fc-8b7a-e7f30e66873c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        192
+      ],
+      "id": "ad96be86-2754-4a6d-863b-f7caefa014f8",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1Ma7HcV8euehGPodlW0xNjlrsi66RnATwI5qAxAiYD0E",
+          "mode": "list",
+          "cachedResultName": "n8n ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ma7HcV8euehGPodlW0xNjlrsi66RnATwI5qAxAiYD0E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ma7HcV8euehGPodlW0xNjlrsi66RnATwI5qAxAiYD0E/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        432,
+        192
+      ],
+      "id": "36f2499a-2ff8-4a77-a251-97e06ef6eb29",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "4uGbB0sCYBEhESio",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        144,
+        160
+      ],
+      "id": "ca71543c-897e-49c3-9522-20d1298177ad",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "RlV1cXrLi4augT53",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "40d7f5a2-c63e-49b1-bddd-76635aa428f0",
+      "name": "When chat message received",
+      "webhookId": "d76cef8f-9358-47a5-8b0b-1565202016ea"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "45abfbcf-0f21-4aa8-bdd0-ff0702b8c4a1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8acbc7947428b8bad5fd3738fbb6e7471f25d9e01e26bad4dc791f1f94dcdc0c"
+  },
+  "id": "5vhTYgzSXtQ1rwE7",
+  "tags": []
+}
